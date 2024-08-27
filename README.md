@@ -18,7 +18,7 @@ Need help? Our support team is here to assist you 24/7. Join our Discord communi
 
 🕹️ Experience It Yourself
 
-Try out the script in action on our demo server at [your-demo-server-url]. See firsthand how easy and intuitive messaging and ignoring can be! 🕹️
+Try out the script in action on our demo server at velocitymc.xyz. See firsthand how easy and intuitive messaging and ignoring can be! 🕹️
 
 💡 Why Choose the Interactive Messaging & Ignore System?
 
