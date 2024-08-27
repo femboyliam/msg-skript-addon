@@ -1,0 +1,54 @@
+command /msg <player> <text>:
+    aliases: /m /reply /r /whisper /w
+    cooldown: 1 seconds
+    trigger:
+        if {ignored::%arg-1%::*} contains player:
+            send "&8[&4&lIGNORE&8] &cThis player has you ignored! You are not able to send them any messages!" to player
+            stop
+        if {ignored::%player%::*} contains arg-1:
+            send "&8[&6&lNOTE&8] &eYou have ignored &c%arg-1%&e, but your message was still sent." to player
+        set {lastMessaged::%player%} to arg-1
+        set {lastMessaged::%arg-1%} to player
+        send "&e%player% &7-> &b&lYOU: &f%arg-2%" to arg-1
+        play sound "entity.player.levelup" to arg-1
+        send "&b&lYOU &7-> &e%arg-1%: &f%arg-2%" to player
+
+command /r <text>:
+    aliases: /reply
+    cooldown: 1 seconds
+    trigger:
+        if {lastMessaged::%player%} is set:
+            set {_recipient} to {lastMessaged::%player%}
+            if {ignored::%{_recipient}%::*} contains player:
+                send "&8[&4&lIGNORE&8] &cThis player has you ignored! You are not able to send them any messages!" to player
+                stop
+            send "&e%player% &7-> &b&lYOU: &f%arg-1%" to {_recipient}
+            play sound "entity.player.levelup" to {_recipient}
+            send "&b&lYOU &7-> &e%{_recipient}%: &f%arg-1%" to player
+        else:
+            send "&8[&c&lERROR&8] &cYou have no one to reply to." to player
+
+command /ignore <player>:
+    trigger:
+        if {ignored::%player%::*} contains arg-1:
+            send "&8[&c&lIGNORE&8] &eYou have already ignored &c%arg-1%&e." to player
+        else:
+            add arg-1 to {ignored::%player%::*}
+            send "&8[&c&lIGNORE&8] &eYou have ignored &c%arg-1%&e." to player
+
+command /unignore <player>:
+    trigger:
+        if {ignored::%player%::*} doesn't contain arg-1:
+            send "&8[&c&lIGNORE&8] &eYou haven't ignored &c%arg-1%&e." to player
+        else:
+            remove arg-1 from {ignored::%player%::*}
+            send "&8[&c&lIGNORE&8] &eYou have unignored &a%arg-1%&e." to player
+
+command /ignorelist:
+    trigger:
+        if size of {ignored::%player%::*} is 0:
+            send "&8[&c&lIGNORE&8] &eYou haven't ignored anyone." to player
+        else:
+            send "&8[&c&lIGNORE&8] &ePlayers you've ignored:" to player
+            loop {ignored::%player%::*}:
+                send "&7- &c%loop-value%" to player
